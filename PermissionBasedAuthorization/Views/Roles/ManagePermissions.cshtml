@@ -1,0 +1,51 @@
+﻿@model PermissionsFormViewModel
+
+@{
+    ViewData["Title"] = "Manage Permissions";
+}
+
+<form asp-action="ManagePermissions" method="post">
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2>@Model.roleName</h2>
+            (Add/Remove) Permissions
+        </div>
+        <div class="card-body">
+            <input type="hidden" asp-for="roleId" />
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <td>○</td>
+                        <td>Claims</td>
+                        <td>Permissions</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.roleClaims.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <div class="form-check m-1">
+                                    <input type="hidden" asp-for="roleClaims[i].DisplayValue" />
+                                    <input asp-for="roleClaims[i].IsSelected" class="form-check-input" />
+                                </div>
+                            </td>
+                            @{
+                                //To get the Claim (ex: Products,..) and Permissions (ex: Create, Edit, ..)
+                                var claimPermission = Model.roleClaims[i].DisplayValue.Split('.');
+                                //this will return list like {"Permission", "Products", "Delete"} rathar than "Permission.Products.Delete"
+                            }
+                            <td>@claimPermission[1]</td>
+                            <td>@claimPermission[2]</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </div>
+</form>

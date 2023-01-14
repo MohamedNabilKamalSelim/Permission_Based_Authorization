@@ -1,0 +1,21 @@
+﻿@inject IAuthorizationService AuthorizationService
+
+@using PermissionBasedAuthorization.Constants
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+@if(AuthorizationService.AuthorizeAsync(User, Permissions.Products.View).Result.Succeeded){
+    <a href="#" class="btn btn-primary">View</a>
+}
+@if(AuthorizationService.AuthorizeAsync(User, Permissions.Products.Create).Result.Succeeded){
+    <a href="#" class="btn btn-success">Create</a>
+}
+@if(AuthorizationService.AuthorizeAsync(User, Permissions.Products.Edit).Result.Succeeded){
+    <a asp-action="Edit" class="btn btn-secondary">Edit</a>
+}
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.Products.Delete).Result.Succeeded)
+{
+    <a href="#" class="btn btn-danger">Delete</a>
+}
